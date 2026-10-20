@@ -11,7 +11,7 @@
  * 用本地等价实现」的写法，绝不让一条 import 把插件带崩。
  * ============================================================================
  */
-import { appendFileSync, mkdirSync } from 'node:fs'
+import { appendFileSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { ORDER_LABELS, formatResults, normalizeOrder, searchBilibili } from './lib/bili.mjs'
@@ -29,11 +29,30 @@ const ORDER_ENUM = Object.keys(ORDER_LABELS)
 /* ────────────────────────── 小日志：出问题能自证 ────────────────────────── */
 
 const stateDir = join(process.env.DSH_HOME || join(homedir(), '.dsh'), 'bili-search')
+const LOG_PATH = join(stateDir, 'plugin.log')
+/** 日志上限：超过就只留最后一半（日志里没有关键词，纯粹防止无限长） */
+const LOG_MAX_BYTES = 256 * 1024
 
+/**
+ * 写一行日志。**刻意不记录搜索关键词、UP 名、视频标题** ——
+ * 这个文件经常被拿去贴 issue / 群里排障，记了就等于把用户在看什么一起交出去。
+ * 只留：条数、耗时、错误码、状态。
+ */
 function logLine(message) {
   try {
     mkdirSync(stateDir, { recursive: true })
-    appendFileSync(join(stateDir, 'plugin.log'), `${new Date().toISOString()} ${message}\n`, 'utf8')
+    let size = 0
+    try {
+      size = statSync(LOG_PATH).size
+    } catch {
+      size = 0
+    }
+    if (size > LOG_MAX_BYTES) {
+      // 截掉前一半，保留最近的上下文
+      const text = readFileSync(LOG_PATH, 'utf8')
+      writeFileSync(LOG_PATH, text.slice(Math.floor(text.length / 2)), 'utf8')
+    }
+    appendFileSync(LOG_PATH, `${new Date().toISOString()} ${message}\n`, 'utf8')
   } catch {
     /* 日志写不了就算了，绝不能因此让插件挂掉 */
   }
@@ -137,7 +156,7 @@ export function apply(ctx, config) {
     const order = normalizeOrder(options.order ?? settings.order)
     const started = Date.now()
     const result = await searchBilibili({ keyword: word, count, order, signal: options.signal })
-    logLine(`搜索「${word}」order=${order} count=${count} → ${result.items.length} 条 / ${Date.now() - started}ms`)
+    logLine(`搜索 order=${order} count=${count} → ${result.items.length} 条 / ${Date.now() - started}ms`)
     return result
   }
 
@@ -264,7 +283,7 @@ export function apply(ctx, config) {
         const partial = await searchBilibili({ keyword: seed, count: 20, order: 'totalrank', signal: options.signal })
         for (const item of partial.items) if (!merged.has(item.bvid)) merged.set(item.bvid, item)
       } catch (error) {
-        logLine(`推荐种子「${seed}」失败：${error?.message ?? error}`)
+        logLine(`推荐种子搜索失败：${error?.message ?? error}`)
       }
     }
 

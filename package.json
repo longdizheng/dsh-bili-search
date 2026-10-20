@@ -36,7 +36,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node test/personal.mjs && node test/switches.mjs && node test/settings.mjs",
+    "test": "node test/privacy.mjs && node test/personal.mjs && node test/switches.mjs && node test/settings.mjs",
     "try": "node test/search.mjs"
   },
   "peerDependencies": {

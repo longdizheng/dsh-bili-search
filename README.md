@@ -180,6 +180,7 @@ dsh plugin --profile <你的 profile> add github:<你的账号>/dsh-bili-search
 
 插件把自己的行为写进 `<DSH_HOME>/bili-search/plugin.log`：
 
+- **日志里不含你的隐私**：只记条数、耗时、错误码与状态，**不记搜索关键词、UP 名、视频标题**（`test/privacy.mjs` 会守住这条）。日志上限 256 KB，超了只保留后半段。
 - `插件已激活（defineTool=host…）` —— 装好了；
 - `插件已激活（defineTool=local…）` —— 宿主的 `dsh-tools` 没解析到，用的是本地等价实现（功能不受影响）；
 - `⚠️ … 注册失败` —— 该入口没挂上，后面会带堆栈。
