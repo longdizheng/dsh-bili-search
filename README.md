@@ -146,7 +146,7 @@
 ### 方式 A：从 GitHub 装（推荐）
 
 ```sh
-dsh plugin --profile <你的 profile> add github:<你的账号>/dsh-bili-search
+dsh plugin --profile <你的 profile> add github:longdizheng/dsh-bili-search
 ```
 
 装完 DSH 会热重载配置，`/bili` 立刻可用。

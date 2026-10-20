@@ -48,13 +48,13 @@
     }
   },
   "license": "MIT",
-  "author": "TODO: 你的名字 <you@example.com>",
+  "author": "dsh-bili-search contributors",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TODO/dsh-bili-search.git"
+    "url": "git+https://github.com/longdizheng/dsh-bili-search.git"
   },
-  "homepage": "https://github.com/TODO/dsh-bili-search#readme",
+  "homepage": "https://github.com/longdizheng/dsh-bili-search#readme",
   "bugs": {
-    "url": "https://github.com/TODO/dsh-bili-search/issues"
+    "url": "https://github.com/longdizheng/dsh-bili-search/issues"
   }
 }
