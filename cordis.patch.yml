@@ -1,0 +1,16 @@
+# 自挂载补丁：包被装进 profile 的 dsh.profile.bundles 后，这一层会自动叠加上去。
+# 也可以不走 bundles，直接在 profile 的 cordis.patch.yml 里写一条 insert:
+# （注意必须用 - insert: 包一层，直接写 - id: 是「修改已有条目」，会静默不生效）
+- insert:
+    - id: bili-search
+      name: dsh-bili-search
+      config:
+        count: 5
+        order: totalrank
+        tool: true              # false = 只留 /bili，工具定义不进请求（省 token）
+        command: true
+        personalize: true       # 用观看历史 / 收藏夹 / 稍后再看重排
+        profileCacheMinutes: 30
+        maxFolders: 10
+        watchLaterLimit: 30
+        historyWeight: 3.2      # 历史 > 收藏(2) > 稍后再看(1.6)

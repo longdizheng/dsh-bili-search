@@ -1,0 +1,60 @@
+{
+  "name": "dsh-bili-search",
+  "version": "0.2.0",
+  "description": "DSH 插件：输入关键词去 B 站搜视频并给链接；有登录态时用观看历史 / 收藏夹 / 稍后再看给结果做个性化重排。工具 bilibili_search + 命令 /bili，零依赖。",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "bilibili",
+    "search",
+    "recommendation"
+  ],
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "compatibility": {
+      "dsh": ">=0.2.0-rc.1 <0.3.0-0",
+      "node": ">=20"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node test/personal.mjs && node test/switches.mjs && node test/settings.mjs",
+    "try": "node test/search.mjs"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-tools": "*"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/dsh-tools": {
+      "optional": true
+    }
+  },
+  "license": "MIT",
+  "author": "TODO: 你的名字 <you@example.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TODO/dsh-bili-search.git"
+  },
+  "homepage": "https://github.com/TODO/dsh-bili-search#readme",
+  "bugs": {
+    "url": "https://github.com/TODO/dsh-bili-search/issues"
+  }
+}
