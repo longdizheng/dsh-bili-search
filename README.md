@@ -196,7 +196,15 @@ dsh plugin --profile <你的 profile> add github:<你的账号>/dsh-bili-search
 
 ```
 index.js            插件入口：注册工具 + 命令（零外部依赖）
-lib/bili.mjs        搜索实现：wbi 签名、指纹、结果格式化
+lib/bili.mjs        搜索实现：wbi 签名、匿名指纹、结果格式化
+lib/personal.mjs    个性化：抓历史/收藏夹/稍后再看、建档案、重排
 cordis.patch.yml    自挂载补丁（走 bundles 路线时用得到）
-test/search.mjs     命令行自测：node test/search.mjs 关键词
+test/               离线自测：npm test（不联网的部分全在这里）
 ```
+
+## 声明
+
+- 本项目调用的是 **B 站网页端自用的接口**，并非官方开放 API。上游随时可能改动，改动后插件会失效或报错——这类问题不属于 bug，是接口变了。
+- 未登录时只用公开的搜索接口；登录态仅用于读取**你自己的**观看历史、收藏夹与稍后再看，凭证只在内存里拼请求头，不落盘、不打印、不上传。
+- 请遵守 B 站用户协议，仅作个人使用。请求做了缓存（档案默认 30 分钟），请不要把间隔调到很高频去刷接口。
+- 与 B 站官方无关。
